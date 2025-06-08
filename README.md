@@ -15,3 +15,9 @@ This repository provides a PyTorch-based implementation of a predictive control 
 ### 1. Install dependencies:
 ```bash
 pip install -r requirements.txt
+```
+
+### 2. Train and evaluate the model
+```bash
+python main.py
+```
