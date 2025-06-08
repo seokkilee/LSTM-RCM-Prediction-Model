@@ -12,12 +12,14 @@ import os
 
 def get_inducing_points(lstm_model, train_dataset, num_inducing_points, output_dim, device):
     print("Collecting latent representations for KMeans...")
+    lstm_model.eval()
     with torch.no_grad():
         latent_all = []
         for bx, _ in DataLoader(train_dataset, batch_size=256):
             latent = lstm_model(bx.to(device))
             latent_all.append(latent.cpu().numpy())
         latent_all = np.vstack(latent_all)
+    lstm_model.train()
     print(f"Latent shape: {latent_all.shape}")
     kmeans = KMeans(n_clusters=num_inducing_points, random_state=SEED).fit(latent_all)
     inducing_points = torch.FloatTensor(kmeans.cluster_centers_).to(device)
